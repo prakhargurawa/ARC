@@ -40,7 +40,7 @@ def solve_a65b410d(x):
         all row below it with blue colour with decreasing counter.
         
     Results:
-        All the 3 train test cases and 1 test cases passed
+        All the 3 train test cases and 1 testing test cases passed
     """
     
     x_answer = x.copy()                 # creating a copy of original matrix , our output will be of same dimension as input
@@ -62,6 +62,54 @@ def solve_a65b410d(x):
         if dist == 0:
             break                       # if width to fill is zero break the loop
     return x_answer
+
+
+def solve_746b3537(x):
+    """
+    Task Description:
+        Input:
+            [[2 3 3 8 1]
+            [2 3 3 8 1]
+            [2 3 3 8 1]]
+        Output:
+            [[2 3 8 1]]
+    
+    Colour Encoding:
+        Black = 0, Dark Blue = 1, Red =2 , Green = 3 , Yellow = 4 , Grey = 5 , Pink = 6 , Orange = 7 , Sky Blue = 8 , Brown = 9
+        
+    Algorithm:
+        We will first find is it horizontal or vertically flowing matrix. After that we need to find unique colour is row or columns 
+        accordingly and present as input in appropriate dimensions.
+        
+    Results:
+        All the 4 train test cases and 1 testing test cases passed
+    """
+    height,width = x.shape                      # height and width of numpy 2D array
+    arr = x[0][0:]                              # capture the colours of first horizontal row
+    isHorizantallySame = np.unique(arr).size    # capture the number of unique colours is  first horizontal row
+    x_answer = []
+    if isHorizantallySame == 1:                 # if there is only one unique colour its horizontal flowing matrix otherwise vertical
+        # case for horizontal flowing matrix
+        first = x[0][0]
+        x_answer.append([first])                # append first colour in answer matrix
+        for i in range(1,height):
+            sec = x[i][0]
+            if sec != first:                    # capture any change of colour in vertical column
+                x_answer.append([sec])          # apeend that unique colour in answer matrix
+                first = sec                     # update this colour for further finding of next new colour
+    else:
+        # case for vertical flowing matrix
+        first = x[0][0]
+        x_answer.append(first)                  # append first colour in answer matrix
+        for i in range(1,width):
+            sec = x[0][i]
+            if sec != first:                    # capture any change of colour in horizontal row
+                x_answer.append(sec)            # apeend that unique colour in answer matrix
+                first = sec                     # update this colour for further finding of next new colour
+        x_answer = [x_answer]                   # just to make visually similiar to answer 
+    return np.array(x_answer)                   # return as numpy 2D array
+
+
 
 
 
