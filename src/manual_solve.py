@@ -10,14 +10,59 @@ import re
 ### result. Name them according to the task ID as in the three
 ### examples below. Delete the three examples. The tasks you choose
 ### must be in the data/training directory, not data/evaluation.
-def solve_6a1e5592(x):
-    return x
 
-def solve_b2862040(x):
-    return x
+def solve_a65b410d(x):
+    """
+    Task Description:
+        Input:
+        [[0 0 0 0 0 0 0]
+        [0 0 0 0 0 0 0]
+        [0 0 0 0 0 0 0]
+        [2 2 0 0 0 0 0]
+        [0 0 0 0 0 0 0]
+        [0 0 0 0 0 0 0]
+        [0 0 0 0 0 0 0]]
+        
+        Desired Output:
+        [[3 3 3 3 3 0 0]
+        [3 3 3 3 0 0 0]
+        [3 3 3 0 0 0 0]
+        [2 2 0 0 0 0 0]
+        [1 0 0 0 0 0 0]
+        [0 0 0 0 0 0 0]
+        [0 0 0 0 0 0 0]]
+    
+    Colour encodings:
+        Black = 0, Red = 2 , Green = 3, Blue=1 
+    
+    Algorithm:
+        We will be finding row with colour red and fill all row above it with red with increasing counter and
+        all row below it with blue colour with decreasing counter.
+        
+    Results:
+        All the 3 train test cases and 1 test cases passed
+    """
+    
+    x_answer = x.copy()                 # creating a copy of original matrix , our output will be of same dimension as input
+    solutions = np.argwhere(x == 2)     # provides us list of coordinates with color red (2)
+    index = solutions[0][0]             # x coordinate where its red (2)
+    dist = len(solutions)               # the number of red tile, this will be used to fill rows above this row 
+    
+    # fill the above rows with green (3) increamenting the width  
+    for i in range(index-1,-1,-1):      # taking reverse steps till start of matrix
+        dist += 1
+        x_answer[i][0:dist] = 3         # fill with green colour
+        
+    height = x.shape[0]
+    dist = len(solutions)               # the number of red tile, this will be used to fill rows below this row
+    # fill the below rows with blue (1) decrementing the width 
+    for i in range(index+1,height):
+        dist -= 1
+        x_answer[i][0:dist] = 1         # fill with blue colour
+        if dist == 0:
+            break                       # if width to fill is zero break the loop
+    return x_answer
 
-def solve_05269061(x):
-    return x
 
 
 def main():
