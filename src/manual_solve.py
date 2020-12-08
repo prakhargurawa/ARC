@@ -110,6 +110,39 @@ def solve_746b3537(x):
     return np.array(x_answer)                   # return as numpy 2D array
 
 
+def solve_f2829549(x):
+    """
+    Task Description:
+        Input:
+            [[7 7 0 1 5 0 0]
+            [7 0 0 1 5 0 0]
+            [0 0 0 1 5 0 5]
+            [0 0 0 1 5 5 0]]
+        Output:
+            [[0 0 3]
+            [0 3 3]
+            [0 3 0]
+            [0 0 3]]
+    
+    Colour Encoding:
+        Black = 0, Dark Blue = 1, Red =2 , Green = 3 , Yellow = 4 , Grey = 5 , Pink = 6 , Orange = 7 , Sky Blue = 8 , Brown = 9
+        
+    Algorithm:
+        We will first segregate the provided matrix into 2 using the boundary created by the Dark Blue (1) color. Now consider
+        the remaing parts as 2 different matrix which will be of similiar dimensions. We need to find the cells which are 
+        black (0) in both matrix and create a new matrix with all those cell marked green (3) and remaining black (0).
+        
+    Results:
+        All the 5 train test cases and 1 testing test cases passed
+    """
+    height,width = x.shape                  # height and width of numpy 2D array
+    x_left = x[:,:int(width/2)]             # the left matrix is first half of input matrix (which is on left of Dark blue boundary)
+    x_right = x[:,int(width/2)+1:]          # the right matrix is second half of input matrix (which is on right of Dark blue boundary)
+    x_left = np.where(x_left == 0,1,0)      # convert all cell Black (0) in left cell to 1 else 0
+    x_right = np.where(x_right == 0,1,0)    # convert all cell Black (0) in right cell to 1 else 0
+    x_mul = np.multiply(x_left,x_right)     # multiply both matrix , this is element wise matrix. Final matrix will have 1's in cell which were having 1 on both side matrix
+    x_answer = np.where(x_mul == 1,3,0)     # convert all 1s to Green (3)
+    return x_answer
 
 
 
