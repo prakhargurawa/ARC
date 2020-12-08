@@ -12,7 +12,7 @@ import re
 ### must be in the data/training directory, not data/evaluation.
 
 
-
+################################################################################################################################
 def solve_007bbfb7(x):
     """
     Task Description:
@@ -49,8 +49,156 @@ def solve_007bbfb7(x):
         for j in range(width):
             if x[i][j]!=0:                                                    # if original input matrix has non-black (0) cell copy original input matrix keeping care of indexes
                 x_answer[height*i:height*i+height,width*j:width*j+width] = x  # limits of indexes,height and width             
-    return x_answer.astype(int)                                               # convert matrix output to integer to match with test cases
+    return x_answer.astype(int)   
+
+################################################################################################################################
     
+from collections import defaultdict
+
+def isOutlier(x,i,j):
+    # This function finds number of neighbour of a cell and counts of unique colour of neighbour which are not as same colour as the cell
+    height,width = x.shape
+    D = defaultdict(int)
+    num_neighbour = 0
+    
+    if i>0:
+        num_neighbour +=1
+        if x[i-1][j]!=x[i][j]:
+            D[x[i-1][j]] +=1
+            
+    if i>0 and j>0:
+        num_neighbour +=1
+        if x[i-1][j-1]!=x[i][j]:
+            D[x[i-1][j-1]] +=1
+        
+    if i>0 and j+1<width:
+        num_neighbour +=1
+        if x[i-1][j+1]!=x[i][j]:
+            D[x[i-1][j+1]] +=1
+        
+    if j+1<width:
+        num_neighbour +=1
+        if x[i][j+1]!=x[i][j]:
+            D[x[i][j+1]] +=1
+        
+    if i+1<height and j+1<width:
+        num_neighbour +=1
+        if x[i+1][j+1]!=x[i][j]:
+            D[x[i+1][j+1]] +=1
+        
+    if i+1<height:
+        num_neighbour +=1
+        if x[i+1][j]!=x[i][j]:
+            D[x[i+1][j]] +=1
+        
+    if i+1<height and j>0:
+        num_neighbour +=1
+        if x[i+1][j-1]!=x[i][j]:
+            D[x[i+1][j-1]] +=1
+        
+    if j>0:
+        num_neighbour +=1
+        if x[i][j-1]!=x[i][j]:
+            D[x[i][j-1]] +=1
+       
+    if sum(D.values()) == num_neighbour: # if all the neighbours have different colour that the cell then its a outlier
+        inverse = [(value, key) for key, value in D.items()]
+        return max(inverse)[1] # we will return the mapping colour as the colour which occured most time, solved on paper this works well
+    return -1
+ 
+################################################################################################################################    
+    
+def solve_d07ae81c(x):
+    """
+    Task Description:
+        Input:
+            [[8 8 8 3 3 3 3 3 3 8 4 8 8 8 8 8 8 8 8]
+            [8 8 8 3 3 3 3 3 3 8 8 8 8 8 8 8 8 8 8]
+            [8 8 8 3 3 3 3 3 3 8 8 8 8 8 8 8 8 8 8]
+            [8 8 8 3 3 3 3 3 3 8 8 8 8 8 8 8 8 8 8]
+            [3 3 3 3 3 3 1 3 3 3 3 3 3 3 3 3 3 3 3]
+            [3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3]
+            [3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3]
+            [8 8 8 3 3 3 3 3 3 8 8 8 8 8 8 8 8 8 8]
+            [8 8 8 3 3 3 3 3 3 8 8 8 8 8 8 8 8 8 8]
+            [8 8 8 3 3 3 3 3 3 8 8 8 8 8 8 8 8 8 8]
+            [8 8 8 3 3 3 3 3 3 8 8 8 8 8 8 8 8 8 8]
+            [3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3]
+            [3 3 3 3 3 3 3 3 3 3 3 3 3 3 1 3 3 3 3]
+            [3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3]
+            [3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3]
+            [8 8 8 3 3 3 3 3 3 8 8 8 8 8 8 8 8 8 8]
+            [8 8 8 3 3 3 3 3 3 8 8 8 8 8 8 8 8 8 8]]
+        Output:
+            [[8 8 4 3 3 3 3 3 3 8 4 8 8 8 8 8 8 8 8]
+            [8 8 8 1 3 3 3 3 3 4 8 4 8 8 8 8 8 8 8]
+            [8 8 8 3 1 3 3 3 1 8 8 8 4 8 8 8 8 8 8]
+            [8 8 8 3 3 1 3 1 3 8 8 8 8 4 8 8 8 8 8]
+            [3 3 3 3 3 3 1 3 3 3 3 3 3 3 1 3 3 3 3]
+            [3 3 3 3 3 1 3 1 3 3 3 3 3 3 3 1 3 3 3]
+            [3 3 3 3 1 3 3 3 1 3 3 3 3 3 3 3 1 3 3]
+            [8 8 8 1 3 3 3 3 3 4 8 8 8 8 8 8 8 4 8]
+            [8 8 4 3 3 3 3 3 3 8 4 8 8 8 8 8 8 8 4]
+            [8 4 8 3 3 3 3 3 3 8 8 4 8 8 8 8 8 4 8]
+            [4 8 8 3 3 3 3 3 3 8 8 8 4 8 8 8 4 8 8]
+            [3 3 3 3 3 3 3 3 3 3 3 3 3 1 3 1 3 3 3]
+            [3 3 3 3 3 3 3 3 3 3 3 3 3 3 1 3 3 3 3]
+            [3 3 3 3 3 3 3 3 3 3 3 3 3 1 3 1 3 3 3]
+            [3 3 3 3 3 3 3 3 3 3 3 3 1 3 3 3 1 3 3]
+            [8 8 8 3 3 3 3 3 3 8 8 4 8 8 8 8 8 4 8]
+            [8 8 8 3 3 3 3 3 3 8 4 8 8 8 8 8 8 8 4]]
+    
+    Colour Encoding:
+        Black = 0, Dark Blue = 1, Red = 2 , Green = 3 , Yellow = 4 , Grey = 5 , Pink = 6 , Orange = 7 , Sky Blue = 8 , Brown = 9
+        
+    Algorithm:
+        We are provided with a 2D numpy matrix with has 2 backgrouds and some outliers , the output matrix we need to change colour
+        of all cells which are in diagonal of those outliers. We first need to find outliers (used isOutlier function for this) and
+        save the colour mapping which will be used to change the colour of cell later. The isOutlier function returns the colour which
+        will be changed to colour of outlier later.
+        
+    Results:
+        All the 3 train test cases and 1 testing test cases passed
+    """
+    height,width = x.shape                  # height and width of numpy 2D array    
+    fillmap = dict()                        # dictinary to store input colour to output colour for later diagonal operations
+    for i in range(height):
+        for j in range(width):
+            color = isOutlier(x,i,j)        # check if cell i,j is outlier or not 
+            if color !=-1:                  # if isOutlier returns -1 , otherwise a not a outlier and returns a colour
+                fillmap[color] = x[i][j]    # keep colour mapping saved
+
+    x_answer = x.copy()
+    for i in range(height):
+        for j in range(width):
+            color = isOutlier(x,i,j)        # check if cell i,j is outlier or not 
+            if color !=-1:                  # if the cell is outlier change colour of all the diagonal cell in all 4 possible directions
+                k,m=i-1,j-1
+                while k>=0 and m>=0:
+                    if x[k][m] in fillmap:
+                        x_answer[k][m] = fillmap[x[k][m]] # change colour using stored colour mapping
+                    k-=1;m-=1
+                    
+                k,m=i+1,j+1
+                while k<height and m<width:
+                    if x[k][m] in fillmap:
+                        x_answer[k][m] = fillmap[x[k][m]] # change colour using stored colour mapping
+                    k+=1;m+=1
+                    
+                k,m=i+1,j-1
+                while k<height and m>=0:
+                    if x[k][m] in fillmap:
+                        x_answer[k][m] = fillmap[x[k][m]] # change colour using stored colour mapping
+                    k+=1;m-=1
+                    
+                k,m=i-1,j+1
+                while k>=0 and m<width:
+                    if x[k][m] in fillmap:
+                        x_answer[k][m] = fillmap[x[k][m]] # change colour using stored colour mapping
+                    k-=1;m+=1             
+    return x_answer                                            # convert matrix output to integer to match with test cases
+
+################################################################################################################################    
 
 def solve_a65b410d(x):
     """
@@ -104,6 +252,7 @@ def solve_a65b410d(x):
             break                       # if width to fill is zero break the loop
     return x_answer
 
+################################################################################################################################
 
 def solve_746b3537(x):
     """
@@ -151,6 +300,7 @@ def solve_746b3537(x):
         x_answer = [x_answer]                   # just to make visually similiar to answer 
     return np.array(x_answer)                   # return as numpy 2D array
 
+################################################################################################################################
 
 def solve_f2829549(x):
     """
@@ -187,6 +337,7 @@ def solve_f2829549(x):
     x_answer = np.where(x_mul == 1,3,0)     # convert all 1s to Green (3)
     return x_answer
 
+################################################################################################################################
 
 def find_different(z):   
     A = z[0]                            # store first partition
@@ -240,7 +391,7 @@ def solve_a87f7484(x):
         z1 = np.hsplit(x, width/height) # split horizontally is width > height. create width/height number of partitions 
     return find_different(z1)           # return the unique partion using ulility function
 
-
+################################################################################################################################
 
 def solve_7468f01a(x):
     """
@@ -283,6 +434,7 @@ def solve_7468f01a(x):
     cropped = x[x_min:x_max+1, y_min:y_max+1]       # get the croped cell, this will be rectangle with non-black cells
     return np.flip(cropped,1)                       # flip the rectangle along horizontal axis
 
+################################################################################################################################
 
 def solve_68b16354(x):
     """
@@ -316,6 +468,7 @@ def solve_68b16354(x):
     assert type(x) == np.ndarray
     return np.flip(x,0) # flip the array vertically 
 
+################################################################################################################################
 
 def solve_c9f8e694(x):
     """
@@ -366,7 +519,7 @@ def solve_c9f8e694(x):
                 x_answer[i][j] = x_answer[i][0] # fill each non-black cell (here grey cell) with the first colour to its row found at (i,0)
     return x_answer
 
-
+################################################################################################################################
 
 def main():
     # Find all the functions defined in this file whose names are
