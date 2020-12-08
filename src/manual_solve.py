@@ -58,59 +58,32 @@ def solve_007bbfb7(x):
     
 from collections import defaultdict
 
-def isOutlier(x,i,j):
+def isSafe(x,y,shape):
+    height,width = shape
+    if x>=0 and x<height and y>=0 and y<width:
+        return True
+    return False
+
+def isOutlier(A,i,j):
     # This function finds number of neighbour of a cell and counts of unique colour of neighbour which are not as same colour as the cell
-    height,width = x.shape
     D = defaultdict(int)
     num_neighbour = 0
+    # Representation of 8 possible neighbour of a cell
+    X = [-1, 0, 1, 1, 1, 0,-1,-1]       # possible value of increment in x coordinate to search for neighbours
+    Y = [-1,-1,-1, 0, 1, 1, 1, 0]       # possible value of increment in y coordinate to search for neighbours
     
-    if i>0:
-        num_neighbour +=1
-        if x[i-1][j]!=x[i][j]:
-            D[x[i-1][j]] +=1
-            
-    if i>0 and j>0:
-        num_neighbour +=1
-        if x[i-1][j-1]!=x[i][j]:
-            D[x[i-1][j-1]] +=1
-        
-    if i>0 and j+1<width:
-        num_neighbour +=1
-        if x[i-1][j+1]!=x[i][j]:
-            D[x[i-1][j+1]] +=1
-        
-    if j+1<width:
-        num_neighbour +=1
-        if x[i][j+1]!=x[i][j]:
-            D[x[i][j+1]] +=1
-        
-    if i+1<height and j+1<width:
-        num_neighbour +=1
-        if x[i+1][j+1]!=x[i][j]:
-            D[x[i+1][j+1]] +=1
-        
-    if i+1<height:
-        num_neighbour +=1
-        if x[i+1][j]!=x[i][j]:
-            D[x[i+1][j]] +=1
-        
-    if i+1<height and j>0:
-        num_neighbour +=1
-        if x[i+1][j-1]!=x[i][j]:
-            D[x[i+1][j-1]] +=1
-        
-    if j>0:
-        num_neighbour +=1
-        if x[i][j-1]!=x[i][j]:
-            D[x[i][j-1]] +=1
-       
-    if sum(D.values()) == num_neighbour: # if all the neighbours have different colour that the cell then its a outlier
+    for x,y in zip(X,Y):
+        if isSafe(i+x,j+y,A.shape):
+            num_neighbour +=1
+            if A[i+x][j+y]!=A[i][j]:
+                D[A[i+x][j+y]] += 1
+      
+    if sum(D.values()) == num_neighbour:# if all the neighbours have different colour that the cell then its a outlier
         inverse = [(value, key) for key, value in D.items()]
-        return max(inverse)[1] # we will return the mapping colour as the colour which occured most time, solved on paper this works well
-    return -1
+        return max(inverse)[1]          # we will return the mapping colour as the colour which occured most time, solved on paper this works well
+    return -1                           # return -1 if its not an outlier
  
-################################################################################################################################    
-    
+        
 def solve_d07ae81c(x):
     """
     Task Description:
