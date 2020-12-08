@@ -145,6 +145,59 @@ def solve_f2829549(x):
     return x_answer
 
 
+def find_different(z):   
+    A = z[0]                            # store first partition
+    A_copy = np.where(A == 0,1,0)       # convert all Black (0) color to 1 else 0
+    unmatch_counter = 0
+    index = -1
+    for i in range(1,len(z)):
+        B = z[i]                        # check each partition one by one
+        B_copy = np.where(B == 0,1,0)   # convert all Black (0) color to 1 else 0
+        if not (A_copy==B_copy).all():  # check if both matrix matches exactly element wise
+            unmatch_counter +=1
+            index = i                   # if not store index of that matrix
+    if unmatch_counter == 1:
+        return z[index]                 # the indexed matrix is unique matrix
+    else:
+        return z[0]                     # this case will occur if first partion was unique matrix
+    
+def solve_a87f7484(x):
+    """
+    Task Description:
+        Input:
+            [[6 0 6]
+            [0 6 6]
+            [6 0 6]
+            [4 0 4]
+            [0 4 4]
+            [4 0 4]
+            [8 8 8]
+            [8 0 8]
+            [8 8 8]]
+        Output:
+            [[8 8 8]
+            [8 0 8]
+            [8 8 8]]
+    
+    Colour Encoding:
+        Black = 0, Dark Blue = 1, Red = 2 , Green = 3 , Yellow = 4 , Grey = 5 , Pink = 6 , Orange = 7 , Sky Blue = 8 , Brown = 9
+        
+    Algorithm:
+        We will first split the given 2D numpy in 3x3 matrix and will find the matrix which is different from all other matrix.
+        The split will be vertical if heigh is more than width else split will be horizontal.
+        
+    Results:
+        All the 4 train test cases and 1 testing test cases passed
+    """
+    height,width = x.shape
+    if height > width: 
+        z1 = np.vsplit(x,height/width)  # split verticaly is height > width. create height/width number of partitions 
+    else:
+        z1 = np.hsplit(x, width/height) # split horizontally is width > height. create width/height number of partitions 
+    return find_different(z1)           # return the unique partion using ulility function
+
+
+
 
 def main():
     # Find all the functions defined in this file whose names are
