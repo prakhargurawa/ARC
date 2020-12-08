@@ -271,6 +271,55 @@ def solve_68b16354(x):
     return np.flip(x,0) # flip the array vertically 
 
 
+def solve_c9f8e694(x):
+    """
+    Task Description:
+        Input:
+            [[0 0 0 0 0 0 0 0 0 0 0 0]
+            [1 0 5 5 0 0 0 0 0 0 0 0]
+            [2 0 5 5 0 0 0 0 0 0 0 0]
+            [1 0 5 5 0 0 0 0 0 0 0 0]
+            [1 0 5 5 0 0 0 0 0 0 0 0]
+            [1 0 5 5 0 0 0 0 5 5 0 0]
+            [2 0 5 5 0 0 0 0 5 5 0 0]
+            [2 0 5 5 0 0 0 0 5 5 0 0]
+            [1 0 0 0 0 0 0 0 5 5 0 0]
+            [1 0 0 0 5 5 5 0 5 5 0 0]
+            [1 0 0 0 5 5 5 0 5 5 0 0]
+            [2 0 0 0 5 5 5 0 5 5 0 0]]
+        Output:
+            [[0 0 0 0 0 0 0 0 0 0 0 0]
+            [1 0 1 1 0 0 0 0 0 0 0 0]
+            [2 0 2 2 0 0 0 0 0 0 0 0]
+            [1 0 1 1 0 0 0 0 0 0 0 0]
+            [1 0 1 1 0 0 0 0 0 0 0 0]
+            [1 0 1 1 0 0 0 0 1 1 0 0]
+            [2 0 2 2 0 0 0 0 2 2 0 0]
+            [2 0 2 2 0 0 0 0 2 2 0 0]
+            [1 0 0 0 0 0 0 0 1 1 0 0]
+            [1 0 0 0 1 1 1 0 1 1 0 0]
+            [1 0 0 0 1 1 1 0 1 1 0 0]
+            [2 0 0 0 2 2 2 0 2 2 0 0]]
+    
+    Colour Encoding:
+        Black = 0, Dark Blue = 1, Red = 2 , Green = 3 , Yellow = 4 , Grey = 5 , Pink = 6 , Orange = 7 , Sky Blue = 8 , Brown = 9
+        
+    Algorithm:
+        We need to fill all the grey cell with the first colour found in each row. This way we will generate a horizontal
+        flowing matrix
+        
+    Results:
+        All the 2 train test cases and 1 testing test cases passed
+    """
+    height,width = x.shape                      # height and width of numpy 2D array
+    x_answer = x.copy()                         # create a copy of original matrix
+    for i in range(height):
+        for j in range(1,width):                # exculding the first vertical column
+            if x_answer[i][j]!=0:
+                x_answer[i][j] = x_answer[i][0] # fill each non-black cell (here grey cell) with the first colour to its row found at (i,0)
+    return x_answer
+
+
 def main():
     # Find all the functions defined in this file whose names are
     # like solve_abcd1234(), and run them.
