@@ -239,6 +239,38 @@ def solve_7468f01a(x):
     return np.flip(cropped,1)                       # flip the rectangle along horizontal axis
 
 
+def solve_68b16354(x):
+    """
+    Task Description:
+        Input:
+            [[2 8 1 3 2 4 1]
+            [4 4 1 1 4 3 4]
+            [1 1 1 1 4 7 3]
+            [1 1 2 3 8 1 3]
+            [4 1 1 1 7 8 4]
+            [3 2 8 4 1 8 4]
+            [1 4 7 1 2 3 4]]
+        Output:
+            [[1 4 7 1 2 3 4]
+            [3 2 8 4 1 8 4]
+            [4 1 1 1 7 8 4]
+            [1 1 2 3 8 1 3]
+            [1 1 1 1 4 7 3]
+            [4 4 1 1 4 3 4]
+            [2 8 1 3 2 4 1]]
+    
+    Colour Encoding:
+        Black = 0, Dark Blue = 1, Red = 2 , Green = 3 , Yellow = 4 , Grey = 5 , Pink = 6 , Orange = 7 , Sky Blue = 8 , Brown = 9
+        
+    Algorithm:
+        The output matrix is mirror image of input matrix along vertical top axis
+        
+    Results:
+        All the 3 train test cases and 1 testing test cases passed
+    """
+    return np.flip(x,0) # flip the array vertically 
+
+
 def main():
     # Find all the functions defined in this file whose names are
     # like solve_abcd1234(), and run them.
