@@ -11,6 +11,47 @@ import re
 ### examples below. Delete the three examples. The tasks you choose
 ### must be in the data/training directory, not data/evaluation.
 
+
+
+def solve_007bbfb7(x):
+    """
+    Task Description:
+        Input:
+            [[7 0 7]
+            [7 0 7]
+            [7 7 0]]
+        Output:
+            [[7 0 7 0 0 0 7 0 7]
+            [7 0 7 0 0 0 7 0 7]
+            [7 7 0 0 0 0 7 7 0]
+            [7 0 7 0 0 0 7 0 7]
+            [7 0 7 0 0 0 7 0 7]
+            [7 7 0 0 0 0 7 7 0]
+            [7 0 7 7 0 7 0 0 0]
+            [7 0 7 7 0 7 0 0 0]
+            [7 7 0 7 7 0 0 0 0]]
+    
+    Colour Encoding:
+        Black = 0, Dark Blue = 1, Red = 2 , Green = 3 , Yellow = 4 , Grey = 5 , Pink = 6 , Orange = 7 , Sky Blue = 8 , Brown = 9
+        
+    Algorithm:
+        The output matrix's dimension is square of input matrix's dimension. The output matrix gets a copy of full input matrix
+        if the cell in input matrix in non-black (0). For efficient copy we have used numpy slicing technique.
+        
+    Results:
+        All the 5 train test cases and 1 testing test cases passed
+    """
+    assert type(x) == np.ndarray
+    height,width = x.shape                                                    # height and width of numpy 2D array
+    x_answer = np.zeros((height*height,width*width))                          # output matrix dimension square of input dimensions
+    
+    for i in range(height):
+        for j in range(width):
+            if x[i][j]!=0:                                                    # if original input matrix has non-black (0) cell copy original input matrix keeping care of indexes
+                x_answer[height*i:height*i+height,width*j:width*j+width] = x  # limits of indexes,height and width             
+    return x_answer.astype(int)                                               # convert matrix output to integer to match with test cases
+    
+
 def solve_a65b410d(x):
     """
     Task Description:
@@ -42,7 +83,7 @@ def solve_a65b410d(x):
     Results:
         All the 3 train test cases and 1 testing test cases passed
     """
-    
+    assert type(x) == np.ndarray    
     x_answer = x.copy()                 # creating a copy of original matrix , our output will be of same dimension as input
     solutions = np.argwhere(x == 2)     # provides us list of coordinates with color red (2)
     index = solutions[0][0]             # x coordinate where its red (2)
@@ -84,6 +125,7 @@ def solve_746b3537(x):
     Results:
         All the 4 train test cases and 1 testing test cases passed
     """
+    assert type(x) == np.ndarray
     height,width = x.shape                      # height and width of numpy 2D array
     arr = x[0][0:]                              # capture the colours of first horizontal row
     isHorizantallySame = np.unique(arr).size    # capture the number of unique colours is  first horizontal row
@@ -135,6 +177,7 @@ def solve_f2829549(x):
     Results:
         All the 5 train test cases and 1 testing test cases passed
     """
+    assert type(x) == np.ndarray
     height,width = x.shape                  # height and width of numpy 2D array
     x_left = x[:,:int(width/2)]             # the left matrix is first half of input matrix (which is on left of Dark blue boundary)
     x_right = x[:,int(width/2)+1:]          # the right matrix is second half of input matrix (which is on right of Dark blue boundary)
@@ -189,7 +232,8 @@ def solve_a87f7484(x):
     Results:
         All the 4 train test cases and 1 testing test cases passed
     """
-    height,width = x.shape
+    assert type(x) == np.ndarray
+    height,width = x.shape              # height and width of numpy 2D array
     if height > width: 
         z1 = np.vsplit(x,height/width)  # split verticaly is height > width. create height/width number of partitions 
     else:
@@ -232,6 +276,7 @@ def solve_7468f01a(x):
     Results:
         All the 3 train test cases and 1 testing test cases passed
     """
+    assert type(x) == np.ndarray
     coords = np.argwhere(x)                         # find coordinates for non-balck cells
     x_min, y_min = coords.min(axis=0)               # find coordinate of left-top cell
     x_max, y_max = coords.max(axis=0)               # find coordinate of right-bottom cell 
@@ -268,6 +313,7 @@ def solve_68b16354(x):
     Results:
         All the 3 train test cases and 1 testing test cases passed
     """
+    assert type(x) == np.ndarray
     return np.flip(x,0) # flip the array vertically 
 
 
@@ -311,6 +357,7 @@ def solve_c9f8e694(x):
     Results:
         All the 2 train test cases and 1 testing test cases passed
     """
+    assert type(x) == np.ndarray
     height,width = x.shape                      # height and width of numpy 2D array
     x_answer = x.copy()                         # create a copy of original matrix
     for i in range(height):
@@ -318,6 +365,7 @@ def solve_c9f8e694(x):
             if x_answer[i][j]!=0:
                 x_answer[i][j] = x_answer[i][0] # fill each non-black cell (here grey cell) with the first colour to its row found at (i,0)
     return x_answer
+
 
 
 def main():
