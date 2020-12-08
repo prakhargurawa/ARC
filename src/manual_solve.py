@@ -198,6 +198,46 @@ def solve_a87f7484(x):
 
 
 
+def solve_7468f01a(x):
+    """
+    Task Description:
+        Input:
+            [[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0]
+            [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0]
+            [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0]
+            [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0]
+            [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0]
+            [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0]
+            [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0]
+            [0 0 6 6 6 3 6 6 0 0 0 0 0 0 0 0 0]
+            [0 0 6 3 3 3 6 6 0 0 0 0 0 0 0 0 0]
+            [0 0 6 6 6 6 3 6 0 0 0 0 0 0 0 0 0]
+            [0 0 6 6 6 6 3 6 0 0 0 0 0 0 0 0 0]
+            [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0]
+            [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0]
+            [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0]
+            [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0]]
+        Output:
+            [[6 6 3 6 6 6]
+            [6 6 3 3 3 6]
+            [6 3 6 6 6 6]
+            [6 3 6 6 6 6]]
+    
+    Colour Encoding:
+        Black = 0, Dark Blue = 1, Red = 2 , Green = 3 , Yellow = 4 , Grey = 5 , Pink = 6 , Orange = 7 , Sky Blue = 8 , Brown = 9
+        
+    Algorithm:
+        Find the rectangle containing non-black(0) cells and then flip it along horizontal axis
+        
+    Results:
+        All the 3 train test cases and 1 testing test cases passed
+    """
+    coords = np.argwhere(x)                         # find coordinates for non-balck cells
+    x_min, y_min = coords.min(axis=0)               # find coordinate of left-top cell
+    x_max, y_max = coords.max(axis=0)               # find coordinate of right-bottom cell 
+    cropped = x[x_min:x_max+1, y_min:y_max+1]       # get the croped cell, this will be rectangle with non-black cells
+    return np.flip(cropped,1)                       # flip the rectangle along horizontal axis
+
 
 def main():
     # Find all the functions defined in this file whose names are
