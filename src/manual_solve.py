@@ -44,12 +44,15 @@ def solve_007bbfb7(x):
     assert type(x) == np.ndarray
     height,width = x.shape                                                    # height and width of numpy 2D array
     x_answer = np.zeros((height*height,width*width))                          # output matrix dimension square of input dimensions
-    
-    for i in range(height):
-        for j in range(width):
-            if x[i][j]!=0:                                                    # if original input matrix has non-black (0) cell copy original input matrix keeping care of indexes
-                x_answer[height*i:height*i+height,width*j:width*j+width] = x  # limits of indexes,height and width             
-    return x_answer.astype(int)   
+    # Reference :  https://stackoverflow.com/questions/44092848/get-indicies-of-non-zero-elements-of-2d-array
+    nonzero = np.nonzero(x)                                                   # Returns a tuple of (nonzero_row_index, nonzero_col_index)
+    nonzero_row = nonzero[0]
+    nonzero_col = nonzero[1]
+
+    for row, col in zip(nonzero_row, nonzero_col):                            # for each non zero cell we will copy original matrix in new output matrixS
+       x_answer[height*row:height*row+height,width*col:width*col+width] = x   # limits of indexes,height and width
+
+    return x_answer.astype(int)           
 
 ################################################################################################################################
     
