@@ -11,6 +11,89 @@ import re
 ### examples below. Delete the three examples. The tasks you choose
 ### must be in the data/training directory, not data/evaluation.
 
+################################################################################################################################
+
+def solve_846bdb03(x):
+    
+    """
+    Task Description:
+        Input:
+        [[0 0 0 0 0 0 0 0 0 0 0 0 0]
+        [0 0 0 0 0 0 0 0 0 0 0 0 0]
+        [0 0 0 0 0 0 0 0 0 0 0 0 0]
+        [0 0 2 2 0 1 0 0 0 0 0 0 0]
+        [0 0 0 2 0 1 1 1 0 0 0 0 0]
+        [0 0 0 2 2 1 0 0 0 0 0 0 0]
+        [0 0 0 0 2 0 0 0 0 0 0 0 0]
+        [0 0 0 0 0 4 0 0 0 0 0 0 4]
+        [0 0 0 0 0 2 0 0 0 0 0 0 1]
+        [0 0 0 0 0 2 0 0 0 0 0 0 1]
+        [0 0 0 0 0 2 0 0 0 0 0 0 1]
+        [0 0 0 0 0 2 0 0 0 0 0 0 1]
+        [0 0 0 0 0 4 0 0 0 0 0 0 4]]
+        
+        Desired Output:
+        [[4 0 0 0 0 0 0 4]
+        [2 2 2 0 1 0 0 1]
+        [2 0 2 0 1 1 1 1]
+        [2 0 2 2 1 0 0 1]
+        [2 0 0 2 0 0 0 1]
+        [4 0 0 0 0 0 0 4]]
+    
+    Colour encodings:
+        Black = 0, Dark Blue = 1, Red = 2 , Green = 3 , Yellow = 4 , Grey = 5 , Pink = 6 , Orange = 7 , Sky Blue = 8 , Brown = 9
+    
+    Algorithm:
+        This is like a puzzle game where we need to find same color blocks to same ends. If the two different color blocks alligned 
+        with the colour of ends, they will exactly copied to attached to ends otherwise the blocks need to be flipped and attached
+        to the ends. The sizes of puzzle blocks are not fixed so our output matrix width will depend on them and height on the two 
+        handles present in diagram.
+        
+    Results:
+        All the 4 train test cases and 1 testing test cases passed
+    """
+    assert type(x) == np.ndarray    
+    x_copy = x.copy()                               # keep a copy of original matrix
+    Z = np.argwhere(x==4)                           # find the position of yellow (4) cells , returns a list of tuple of positions of all yellow cells (which are always 4) 
+    height = Z[2][0] - Z[0][0] +1                   # the height of output matrix can be calculated by positions of yellow cells
+
+    color_left = x[Z[0][0]+1][Z[0][1]]              # colour on left pole
+    color_right = x[Z[1][0]+1][Z[1][1]]             # colour on right pole
+
+    x_copy[Z[0][0]:Z[3][0]+1,Z[0][1]] = 0           # mark left pole as black (0) ,useful for future calculations
+    x_copy[Z[0][0]:Z[3][0]+1,Z[1][1]] = 0           # mark right pole as black(0) ,useful for future calculations
+    
+    x_color_left = np.where(x_copy==color_left,1,0) # craete a matrix where left color is 1 rest 0
+    coords = np.argwhere(x_color_left)              # find all coordinates of 1 (here left color)
+    x_min_left, y_min_left = coords.min(axis=0)     # min x,min y of 1
+    x_max_left, y_max_left = coords.max(axis=0)     # max x,max y of 1  
+    x_color_left_part = x_copy[x_min_left:x_max_left+1, y_min_left:y_max_left+1] # crop the puzzle part with left colour
+
+    x_color_right = np.where(x_copy==color_right,1,0)   # craete a matrix where right color is 1 rest 0
+    coords = np.argwhere(x_color_right)                 # find all coordinates of 1 (here right color)
+    x_min_right, y_min_right = coords.min(axis=0)       # min x,min y of 1
+    x_max_right, y_max_right = coords.max(axis=0)       # max x,max y of 1 
+    x_color_right_part = x_copy[x_min_right:x_max_right+1, y_min_right:y_max_right+1] # crop the puzzle part with right colour
+    
+    width = x_color_left_part.shape[1] + x_color_right_part.shape[1] +2 # the width of output matrix depends on the two puzzle blocks +2 (for the two yellow cells)
+    
+    x_answer = np.zeros((height,width))                 # create a output matrix 
+    x_answer[0][0] = x_answer[height-1][0] = x_answer[0][width-1] = x_answer[height-1][width-1] = 4 # mark all corners as yellow (4) cell
+    x_answer[1:height-1,0] = color_left                 # mark left border with colour left
+    x_answer[1:height-1,width-1] = color_right          # mark right border with colout right
+    
+    if y_max_right > y_max_left: # Alligned case
+        # If case is alligned we need to as it copy the two puzzle blocks between poles
+        x_answer[1:1+x_color_left_part.shape[0],1:1+x_color_left_part.shape[1]] = x_color_left_part
+        base = x_color_left_part.shape[1] +1
+        x_answer[1:1+x_color_right_part.shape[0],base:base+x_color_right_part.shape[1]] = x_color_right_part
+    else: # Non- alligned case
+        # If case is non-alligned we need to as it copy the two puzzle blocks between poles after flipping the puzzle blocks
+        x_answer[1:1+x_color_left_part.shape[0],1:1+x_color_left_part.shape[1]] = np.flip(x_color_left_part,1) # flip left puzzle block
+        base = x_color_left_part.shape[1] +1
+        x_answer[1:1+x_color_right_part.shape[0],base:base+x_color_right_part.shape[1]] = np.flip(x_color_right_part,1) # flip right puzzle block
+    
+    return x_answer.astype(int)
 
 ################################################################################################################################
 def solve_007bbfb7(x):
@@ -136,6 +219,7 @@ def solve_d07ae81c(x):
     Results:
         All the 3 train test cases and 1 testing test cases passed
     """
+    assert type(x) == np.ndarray    
     height,width = x.shape                  # height and width of numpy 2D array    
     fillmap = dict()                        # dictinary to store input colour to output colour for later diagonal operations
     for i in range(height):
