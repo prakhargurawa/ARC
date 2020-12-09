@@ -497,6 +497,59 @@ def solve_c9f8e694(x):
 
 ################################################################################################################################
 
+def solve_3bd67248(x):
+    
+    """ 
+    Task Description:
+        Input:
+            [[8 0 0 0 0 0 2]
+             [8 0 0 0 0 2 0]
+             [8 0 0 0 2 0 0]
+             [8 0 0 2 0 0 0]
+             [8 0 2 0 0 0 0]
+             [8 2 0 0 0 0 0]
+             [8 4 4 4 4 4 4]]
+        Output:
+            [[8 0 0 0 0 0 2]
+             [8 0 0 0 0 2 0]
+             [8 0 0 0 2 0 0]
+             [8 0 0 2 0 0 0]
+             [8 0 2 0 0 0 0]
+             [8 2 0 0 0 0 0]
+             [8 4 4 4 4 4 4]]
+    
+    Colour Encoding:
+        Black = 0, Dark Blue = 1, Red =2 , Green = 3 , Yellow = 4 , Grey = 5 , Pink = 6 , Orange = 7 , Sky Blue = 8 , Brown = 9
+        
+    Algorithm:
+        The description of the task is, given a matrix with left most column filled completely with any colour (0-9), \
+        the goal is to fill the last row of the matrix with yellow colour (4), except the first cell in the row and \
+        fill the diagonal cells of the matrix from left bottom corner to top right corner with red colour (2) except the bottom left corner cell.
+    
+    Implementation:
+        First the left most column colour is fetched for reference, then fill the last row of the matrix with yellow (4) \ 
+        and to get the indices of the diagonal cells of the matrix, since the diagonal needed is from bottom left corner to top right corner, \
+        the matrix is flipped upside down and diagonal cell indices (top left corner to bottom right corner) are fetched and filled with red (2) and inverted back to original position, \
+        now the left bottom most corner cell is filled with the reference colour which is fetched initially.
+              
+    Results:
+        All the 3 train test cases and 1 testing test cases passed
+    """
+
+    assert type(x) == np.ndarray 
+    rows, columns = x.shape                             # fetching number of rows and columns in the given matrix for matrix manipulation
+    left_col_color = x[-1:,0:1].copy()                  # fetching the left most column of the matrix colour for reference
+    x[-1:,:] = 4                                        # filling the last row of the matrix with yellow(4)
+    di = np.diag_indices(rows)                          # fetching the diagonal cell indices 
+    x_flip = np.flipud(x)                               # flipping the matrix 
+    x_flip[di] = 2                                      # filling the digonal cells with red(2) top left corner to bottom right corner
+    x = np.flipud(x_flip)                               # on flipping back the array the top left corner would become bottom left corner, similarly botton right corner to top right corner
+    x[-1:,0:1] = left_col_color[0][0]                   # filling the left most bottom cell with reference colour which was changed during diagonal colouring
+
+    return x
+
+################################################################################################################################
+
 def main():
     # Find all the functions defined in this file whose names are
     # like solve_abcd1234(), and run them.
