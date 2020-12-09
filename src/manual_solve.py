@@ -550,6 +550,63 @@ def solve_3bd67248(x):
 
 ################################################################################################################################
 
+def solve_c1d99e64(x):
+    
+    """
+    Task Description:
+        Input:
+            [[8 8 8 8 0 8 8 8 8 8 0 0 8 8]
+             [0 8 0 0 0 0 8 8 8 8 0 8 8 8]
+             [8 8 0 8 0 8 8 8 8 8 0 0 8 8]
+             [8 0 8 8 0 8 8 0 0 8 0 8 8 0]
+             [8 8 8 8 0 8 8 0 0 0 0 8 8 8]
+             [8 8 8 0 0 8 8 0 8 0 0 8 8 8]
+             [8 0 8 8 0 8 8 8 8 8 0 0 0 8]
+             [8 8 0 0 0 8 0 0 8 8 0 0 8 8]
+             [8 0 0 8 0 8 8 8 0 8 0 8 8 8]
+             [8 8 0 8 0 8 8 8 8 8 0 0 8 0]
+             [0 8 0 8 0 0 0 0 0 0 0 8 0 8]
+             [8 8 8 8 0 8 8 8 8 8 0 0 8 0]]
+        Output:
+            [[8 8 8 8 2 8 8 8 8 8 2 0 8 8]
+             [0 8 0 0 2 0 8 8 8 8 2 8 8 8]
+             [8 8 0 8 2 8 8 8 8 8 2 0 8 8]
+             [8 0 8 8 2 8 8 0 0 8 2 8 8 0]
+             [8 8 8 8 2 8 8 0 0 0 2 8 8 8]
+             [8 8 8 0 2 8 8 0 8 0 2 8 8 8]
+             [8 0 8 8 2 8 8 8 8 8 2 0 0 8]
+             [8 8 0 0 2 8 0 0 8 8 2 0 8 8]
+             [8 0 0 8 2 8 8 8 0 8 2 8 8 8]
+             [8 8 0 8 2 8 8 8 8 8 2 0 8 0]
+             [0 8 0 8 2 0 0 0 0 0 2 8 0 8]
+             [8 8 8 8 2 8 8 8 8 8 2 0 8 0]]
+    
+    Colour Encoding:
+        Black = 0, Dark Blue = 1, Red =2 , Green = 3 , Yellow = 4 , Grey = 5 , Pink = 6 , Orange = 7 , Sky Blue = 8 , Brown = 9
+        
+    Algorithm:
+        The description of the task is simple, the rows with all the cells black(0) and/or the columns with all the cells black(0) should be filled with colour red(2)
+    
+    Implementation:
+        First fetch all the row indicies ('rows_black') which has all the cells in them as black(0) and similarly for columns('columns_black'), \
+        Iterate through 'columns_black' to fill all the cells with red(2) and likewise iterate through 'columns_black' to fill all the cells with red(2)
+              
+    Results:
+        All the 3 train test cases and 1 testing test cases passed
+    """ 
+    
+    assert type(x) == np.ndarray 
+    x_copy = x.copy()
+    rows_black = np.where(~x_copy.any(axis=1))[0]              # fetch all the row indices which has all the cells with black
+    columns_black = np.where(~x_copy.any(axis=0))[0]           # fetch all the column indicies which has all the cells with black
+    for row in rows_black:                                     # iterate through row indices and fill the colour red(2) for rows
+        x_copy[row,:] = 2
+    for col in columns_black:                                  # iterate through column indices and fill the colour red(2) for columns
+        x_copy[:,col] = 2    
+    return x_copy
+    
+################################################################################################################################
+
 def main():
     # Find all the functions defined in this file whose names are
     # like solve_abcd1234(), and run them.
