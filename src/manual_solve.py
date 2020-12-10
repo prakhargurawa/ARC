@@ -44,10 +44,16 @@ def solve_846bdb03(x):
         Black = 0, Dark Blue = 1, Red = 2 , Green = 3 , Yellow = 4 , Grey = 5 , Pink = 6 , Orange = 7 , Sky Blue = 8 , Brown = 9
     
     Algorithm:
-        This is like a puzzle game where we need to find same color blocks to same ends. If the two different color blocks alligned 
+        This is like a puzzle game where we need to connect same color blocks to same ends. If the two different color blocks are alligned 
         with the colour of ends, they will exactly copied to attached to ends otherwise the blocks need to be flipped and attached
         to the ends. The sizes of puzzle blocks are not fixed so our output matrix width will depend on them and height on the two 
         handles present in diagram.
+        
+    Implementation:
+        Find first the yellow cells and the the two colors on pillar . Also remember that which colour is at left and which at right.
+        Remove the two poles from input matrix and find the two puzzle pieces by cropping the segment after finding x_min,y_min,x_max,y_max
+        of each colour. Check whether the two colour puzzule are alligned with colour of poles and copy exact puzzle or flipped image of
+        puzzle accordingly.
         
     Results:
         All the 4 train test cases and 1 testing test cases passed
@@ -120,6 +126,10 @@ def solve_007bbfb7(x):
     Algorithm:
         The output matrix's dimension is square of input matrix's dimension. The output matrix gets a copy of full input matrix
         if the cell in input matrix in non-black (0). For efficient copy we have used numpy slicing technique.
+        
+    Implementation:
+        Create output matrix with dimension squared of dimension of input matrix. Find indexxes of non zero cells using np.nonzero
+        For each non zero cell index copy the exact original cell to putput cell cnsidering the indexes properly.
         
     Results:
         All the 5 train test cases and 1 testing test cases passed
@@ -215,6 +225,10 @@ def solve_d07ae81c(x):
         of all cells which are in diagonal of those outliers. We first need to find outliers (used isOutlier function for this) and
         save the colour mapping which will be used to change the colour of cell later. The isOutlier function returns the colour which
         will be changed to colour of outlier later.
+        
+    Implementation:
+        Find all outliers using isOutlier (The function find number of neighour of input cell and their colour and using that info finds
+        whether input cell is outlier or not).Later for each outler change colour of all cells diagonal to that outlier cell.
         
     Results:
         All the 3 train test cases and 1 testing test cases passed
@@ -377,6 +391,11 @@ def solve_a65b410d(x):
     Algorithm:
         We will be finding row with colour red and fill all row above it with red with increasing counter and
         all row below it with blue colour with decreasing counter.
+    
+    Implementation:
+        Use argwhere to find indexes of red cell, this will give us idea of width of red cell pole. Later use the width to fill
+        Green and blue poles by increasing and decreasing width sizes respectively. Start thiese operation index just above and below
+        of index of red cell.
         
     Results:
         All the 3 train test cases and 1 testing test cases passed
@@ -573,6 +592,10 @@ def solve_7468f01a(x):
         
     Algorithm:
         Find the rectangle containing non-black(0) cells and then flip it along horizontal axis
+    
+    Implementation:
+        Use arhswhere to find coordinate of non-black cell and fetcg x_min,y_min,x_max,y_max and use there coordinates to crop
+        the non-black block.
         
     Results:
         All the 3 train test cases and 1 testing test cases passed
@@ -656,6 +679,9 @@ def solve_c9f8e694(x):
     Algorithm:
         We need to fill all the grey cell with the first colour found in each row. This way we will generate a horizontal
         flowing matrix
+        
+    Implementation:
+        For each cell in first column get the colour and fill same colur to all non-black cell of its row.
         
     Results:
         All the 2 train test cases and 1 testing test cases passed
