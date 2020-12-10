@@ -258,7 +258,97 @@ def solve_d07ae81c(x):
                     k-=1;m+=1             
     return x_answer                                            # convert matrix output to integer to match with test cases
 
-################################################################################################################################    
+################################################################################################################################  
+
+def solve_ae3edfdc(x):
+    
+    """ 
+    Task Description:
+        Input:
+            [[0 0 0 7 0 0 0 0 0 0 0 0 0 0 0]
+             [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0]
+             [7 0 0 1 0 0 0 0 0 7 0 0 0 0 0]
+             [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0]
+             [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0]
+             [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0]
+             [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0]
+             [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0]
+             [0 0 0 7 0 0 0 0 0 0 0 0 0 0 0]
+             [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0]
+             [0 0 0 0 0 3 0 0 0 0 0 2 0 0 0]
+             [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0]
+             [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0]
+             [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0]
+             [0 0 0 0 0 0 0 0 0 0 0 3 0 0 0]]
+        Output:
+            [[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0]
+             [0 0 0 7 0 0 0 0 0 0 0 0 0 0 0]
+             [0 0 7 1 7 0 0 0 0 0 0 0 0 0 0]
+             [0 0 0 7 0 0 0 0 0 0 0 0 0 0 0]
+             [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0]
+             [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0]
+             [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0]
+             [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0]
+             [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0]
+             [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0]
+             [0 0 0 0 0 0 0 0 0 0 3 2 0 0 0]
+             [0 0 0 0 0 0 0 0 0 0 0 3 0 0 0]
+             [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0]
+             [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0]
+             [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0]]
+    
+    Colour Encoding:
+        Black = 0, Dark Blue = 1, Red =2 , Green = 3 , Yellow = 4 , Grey = 5 , Pink = 6 , Orange = 7 , Sky Blue = 8 , Brown = 9
+        
+    Algorithm:
+        The description of the task is, there would be any different colours(0-9) in the given matrix, and some colour would be center colour (or one time occurence in the matrix). \
+        For the center color, there may be another colour in the same row and/or column (its occurence would be more than one), so lets call that colour as pair colour. \
+        For every center colour, the respective pair colours should move towards the centre and should be placed to neighbouring indices of the its center colour, \
+        but the direction of the pair colour should be maintained, if the pair color was on right side of the center colour then the pair colour should be placed right side neighbouring indices of the center colour and respectively other positions.
+    
+    Implementation:        
+        First all the unique colours in the matrix are fetched except black(0), iterating through each colour and find their indices if the length of the indices is equal to one then it is a center colour, if the lenghth of the indices is more than one then it is pair color. \
+        Filtering through center colours and fetch the whole colours again and filter all the pair colours (if length of the indices is more than one) for comparasion. \
+        Each center colour is compared with pair colours and finding whether the pair colour exists on the same row or same column, if the pair colour exists in the same row or same column, flip the pair colour to black and then check which side of the center color it exists using source matrix(x) . \
+            
+        If the pair colour row index is more than the center colour row index, then the position is bottom.
+        If the pair colour row index is less than the center colour row index, then the position is top.
+        If the pair colour column index is more than the center colour column index, then the position is right.
+        If the pair colour column index is less than the center colour column index, then the position is left.
+        
+        After finding the position, from the center colour either column indices or row indices are adjusted to +1 or -1 based on the above if conditions and flipped it the respective pair colour.
+              
+    Results:
+        All the 3 train test cases and 1 testing test cases passed
+    """ 
+    assert type(x) == np.ndarray 
+    x_copy = x.copy()
+    unique = np.unique(x)[1:]                                                  # all the unique colours are fetched from the matrix
+    for center in unique:                                                      # iterating through each colour 
+        row, column = np.where(x == center)                                    # fetch the indices of the colour
+        # focusing on the center point
+        if len(row) == 1 and len(column) == 1:                                 # if the length of the indices is equal to one, then it is a center colour
+            for pair in unique:                                                # parsing the colours again to compare and find its respective pair colour
+                p_row, p_column = np.where(x == pair)                          # fetch the indices of the color
+                # Focusing on the pair points
+                if center != pair and len(p_row) != 1 and len(p_column) != 1:  # filter out if the center colour and pair colour are same, then filter through the colours whose length of indcies are more than one. ie., pair colour
+                    for p_r, p_c in zip(p_row,p_column):                       # since it is pair colour, above np.where would return more than one row and column indcies, i.e., parse through each pair colour.
+                        if p_r == row:                                         # check whether the pair colour is in same row for the respective center colour and then check for which position or side 
+                            x_copy[p_r][p_c] = 0                               # flip the actual cell to black
+                            if p_c < column:                                   # check if pair colour column index is less than center colour column index
+                                x_copy[p_r][column-1] = pair                   # if yes, then the position/side of the pair colour is left so subtracting center colour column index with -1 and flip the colour of the cell to respective iteration of the colour(pair)
+                            elif p_c > column:                                 # extra check inorder to aviod unnecesary matrix alteration, check whether the pair colour column index is more than the center colour column index
+                                x_copy[p_r][column+1] = pair                   # if yes, then the position/side of the pair colour is right so adding center colour column index with +1 and flip the colour of the cell to respective iteration of the colour(pair)
+                        if p_c == column:                                      # check if the pair colour is in the same column
+                            x_copy[p_r][p_c] = 0                               # flip the actual cell to black
+                            if p_r < row:                                      # check if pair colour row index is less than center colour row index
+                                x_copy[row[0]-1][p_c] = pair                   # if yes, then the position/side of the pair colour is top so subtracting center colour row index with -1 and flip the colour of the cell to respective iteration of the colour(pair)
+                            elif p_r > row:                                    # extra check inorder to aviod unnecesary matrix alteration, check whether the pair colour row index is more than the center colour row index
+                                x_copy[row[0]+1][p_c] = pair                   # if yes, then the position/side of the pair colour is bottom so adding center colour row index with +1 and flip the colour of the cell to respective iteration of the colour(pair)
+    return x_copy
+
+
+################################################################################################################################ 
 
 def solve_a65b410d(x):
     """
