@@ -50,9 +50,9 @@ def solve_846bdb03(x):
         handles present in diagram.
         
     Implementation:
-        Find first the yellow cells and the the two colors on pillar . Also remember that which colour is at left and which at right.
+        Find first the yellow cells and the the two colors on pillar .Also remember that which colour is at left and which at right.
         Remove the two poles from input matrix and find the two puzzle pieces by cropping the segment after finding x_min,y_min,x_max,y_max
-        of each colour. Check whether the two colour puzzule are alligned with colour of poles and copy exact puzzle or flipped image of
+        of each colour. Check whether the two colour puzzle are alligned with colour of poles and copy exact puzzle or flipped image of
         puzzle accordingly.
         
     Results:
@@ -128,8 +128,8 @@ def solve_007bbfb7(x):
         if the cell in input matrix in non-black (0). For efficient copy we have used numpy slicing technique.
         
     Implementation:
-        Create output matrix with dimension squared of dimension of input matrix. Find indexxes of non zero cells using np.nonzero
-        For each non zero cell index copy the exact original cell to putput cell cnsidering the indexes properly.
+        Create output matrix with dimension squared of dimension of input matrix. Find indexes of non zero cells using np.nonzero
+        For each non zero cell index copy the exact original cell to putput cell considering the indexes properly.
         
     Results:
         All the 5 train test cases and 1 testing test cases passed
@@ -440,6 +440,11 @@ def solve_746b3537(x):
         We will first find is it horizontal or vertically flowing matrix. After that we need to find unique colour is row or columns 
         accordingly and present as input in appropriate dimensions.
         
+    Implemenation:
+        If all the cell colur in first row are same than this will be a horizontal flowing matrix otherwise vertical. If it is 
+        horizontal flowing matrix traverse the first column and store all unique colour and store in list data structure. Finally
+        return as numpy array.
+        
     Results:
         All the 4 train test cases and 1 testing test cases passed
     """
@@ -489,6 +494,10 @@ def solve_f2829549(x):
         Black = 0, Dark Blue = 1, Red =2 , Green = 3 , Yellow = 4 , Grey = 5 , Pink = 6 , Orange = 7 , Sky Blue = 8 , Brown = 9
         
     Algorithm:
+        The problem ask us to find non-black cells on the left and right side of pillar formed using dark blue colour. We will
+        first divide the array into two parts to find left and right matrix based on width of original matrix.
+        
+    Implementation:
         We will first segregate the provided matrix into 2 using the boundary created by the Dark Blue (1) color. Now consider
         the remaing parts as 2 different matrix which will be of similiar dimensions. We need to find the cells which are 
         black (0) in both matrix and create a new matrix with all those cell marked green (3) and remaining black (0).
@@ -546,8 +555,13 @@ def solve_a87f7484(x):
         Black = 0, Dark Blue = 1, Red = 2 , Green = 3 , Yellow = 4 , Grey = 5 , Pink = 6 , Orange = 7 , Sky Blue = 8 , Brown = 9
         
     Algorithm:
+        The problem asks us to find most unique 3x3 matrix cell ignoring the colour scheme. Created an utility function find_different
+        to find the most unique cell ifnoring colour scheme.
+        
+    Impelmentation:
         We will first split the given 2D numpy in 3x3 matrix and will find the matrix which is different from all other matrix.
-        The split will be vertical if heigh is more than width else split will be horizontal.
+        The split will be vertical if heigh is more than width else split will be horizontal. Vertical split is done using vsplit
+        and horizontal split as hsplit.
         
     Results:
         All the 4 train test cases and 1 testing test cases passed
@@ -594,7 +608,7 @@ def solve_7468f01a(x):
         Find the rectangle containing non-black(0) cells and then flip it along horizontal axis
     
     Implementation:
-        Use arhswhere to find coordinate of non-black cell and fetcg x_min,y_min,x_max,y_max and use there coordinates to crop
+        Use argswhere to find coordinate of non-black cell and fetch x_min,y_min,x_max,y_max and use there coordinates to crop
         the non-black block.
         
     Results:
