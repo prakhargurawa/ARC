@@ -274,6 +274,110 @@ def solve_d07ae81c(x):
 
 ################################################################################################################################  
 
+def solve_f35d900a(x):
+    
+    """
+    Task Description:
+        Input:
+            [[0 0 0 0 0 0 0 0 0 0 0 0 0 0]
+             [0 0 0 0 0 0 0 0 0 0 0 0 0 0]
+             [0 0 0 0 0 0 0 0 0 0 0 0 0 0]
+             [0 0 1 0 0 0 0 0 0 0 8 0 0 0]
+             [0 0 0 0 0 0 0 0 0 0 0 0 0 0]
+             [0 0 0 0 0 0 0 0 0 0 0 0 0 0]
+             [0 0 0 0 0 0 0 0 0 0 0 0 0 0]
+             [0 0 0 0 0 0 0 0 0 0 0 0 0 0]
+             [0 0 0 0 0 0 0 0 0 0 0 0 0 0]
+             [0 0 0 0 0 0 0 0 0 0 0 0 0 0]
+             [0 0 0 0 0 0 0 0 0 0 0 0 0 0]
+             [0 0 0 0 0 0 0 0 0 0 0 0 0 0]
+             [0 0 0 0 0 0 0 0 0 0 0 0 0 0]
+             [0 0 0 0 0 0 0 0 0 0 0 0 0 0]
+             [0 0 8 0 0 0 0 0 0 0 1 0 0 0]
+             [0 0 0 0 0 0 0 0 0 0 0 0 0 0]
+             [0 0 0 0 0 0 0 0 0 0 0 0 0 0]]
+        Output:
+            [[0 0 0 0 0 0 0 0 0 0 0 0 0 0]
+             [0 0 0 0 0 0 0 0 0 0 0 0 0 0]
+             [0 8 8 8 0 0 0 0 0 1 1 1 0 0]
+             [0 8 1 8 5 0 5 0 5 1 8 1 0 0]
+             [0 8 8 8 0 0 0 0 0 1 1 1 0 0]
+             [0 0 5 0 0 0 0 0 0 0 5 0 0 0]
+             [0 0 0 0 0 0 0 0 0 0 0 0 0 0]
+             [0 0 5 0 0 0 0 0 0 0 5 0 0 0]
+             [0 0 0 0 0 0 0 0 0 0 0 0 0 0]
+             [0 0 0 0 0 0 0 0 0 0 0 0 0 0]
+             [0 0 5 0 0 0 0 0 0 0 5 0 0 0]
+             [0 0 0 0 0 0 0 0 0 0 0 0 0 0]
+             [0 0 5 0 0 0 0 0 0 0 5 0 0 0]
+             [0 1 1 1 0 0 0 0 0 8 8 8 0 0]
+             [0 1 8 1 5 0 5 0 5 8 1 8 0 0]
+             [0 1 1 1 0 0 0 0 0 8 8 8 0 0]
+             [0 0 0 0 0 0 0 0 0 0 0 0 0 0]]
+    
+    Colour Encoding:
+        Black = 0, Dark Blue = 1, Red =2 , Green = 3 , Yellow = 4 , Grey = 5 , Pink = 6 , Orange = 7 , Sky Blue = 8 , Brown = 9
+        
+    Algorithm:        
+        The description of the task is, given 2 pairs of any colours (only 2 unique colours at a time) at any position but each cell would be in the same row and column with the other 2 cells and almost diagonal to 1 cell, so there would be total 4 cells with 2 unique colours is the shape of square or rectangle, so lets call these cells as center cells \
+        The goal of the task is 1. to colour the neighbouring cells of each center cell with given opposite color, and 2. for given 4 center cells, fill the row and column alternate cells with grey(5) for each center cell only to half distance to the other neighbouring center cells with a condition of coloured cells should not be next to each other in certain cases and can exists next to each other in certain condition. \ 
+    
+    Implementation:  
+        First 2 unique colours are fetched from the given matrix, and iterate through each colour and fetch the own indcies(m_rows, m_column) then the pair of opposite colour indices are fetched(p_rows, p_columns) for calculating the distance between the neighbouring center cells. \
+        First the neighbouring cells of the center cells are filled with opposite colour, then distance between the neighbouring center cells are calculated and made it to half so that their rows and columns alternate cells can be filled with grey(5) to half distance and the remaining half distance will be filled while looping through the other neighbouring center cell.
+             
+    Results:
+        All the 3 train test cases and 1 testing test cases passed
+        
+    """
+    assert type(x) == np.ndarray           
+    x_copy = x.copy()                                                                              # taking the copy of the given matrix so source will be kept for reference and copy will be modified
+    unique_colors = np.unique(x)[1:]                                                               # fetching the unique colours
+    first_color = unique_colors[0]                                                                 # fetching any one unique colour for further matrix manipulation
+    second_color = unique_colors[1]                                                                # fetching the other colour for further matrix manipulation
+
+    for color in unique_colors:                                                                    # looping through each unique color
+        m_rows, m_columns = np.where(x == color)                                                   # fetching the indices which is 2 row and 2 column values in this case
+        for m_row, m_column in zip(m_rows, m_columns):
+            if color == first_color:                                                               # checking for a single colour and select the opposite colour to fill the neighbouring cells.
+                p_rows, p_columns = np.where(x == second_color)
+                fill_color = second_color
+            elif color == second_color:
+                p_rows, p_columns = np.where(x == first_color)
+                fill_color = first_color
+            # filling the neighbouring cells with opposite colour
+            x_copy[m_row,m_column+1] = x_copy[m_row+1,m_column+1] = x_copy[m_row+1,m_column] = x_copy[m_row+1,m_column-1] = fill_color
+            x_copy[m_row,m_column-1] = x_copy[m_row-1,m_column-1] = x_copy[m_row-1,m_column] = x_copy[m_row-1,m_column+1] = fill_color
+            
+            for p_row, p_column in zip(p_rows, p_columns):                                         # looping through the neighbouring cells
+                if p_row == m_row:                                                                 # checking whether the looped center neighbouting cell is in same row
+                    col_distance = p_column - m_column                                             # if the lopped cell is in same row, the distance is calculated by subtracting the columns
+                    abs_col_distance = abs(p_column - m_column) - 1                                # getting the absolute value to divide the distance to half so the alternate cells can be filled
+                    for r_index, col_jumps in enumerate(range(int(abs_col_distance/2))):
+                        if abs_col_distance == 10 and r_index > 2:                                 # this condition is made because in case of distance less than 10, while filling the alternate cells to half distance then on other half filling the coloured cells can be next to each other, for distance of 10 the cells should not be next to each other 
+                            continue
+                        if col_jumps % 2 == 0:                                                     # this condition is to make alternate cell filling
+                            if col_distance > 0:                                                   # if distance is positive the filling would be right direction else left direction
+                                x_copy[m_row][m_column + col_jumps + 2] = 5
+                            else:
+                                x_copy[m_row][m_column - col_jumps - 2] = 5
+                                
+                elif p_column == m_column:                                                         # similar to above row check, neighbouring center cells are checked whether it exists in same column
+                    row_distance = p_row - m_row                                                   # if it exists in same column, then distance is calculted by subtracting the rows
+                    abs_row_distance = abs(p_row - m_row) - 1                                      # getting the absolute value to divide the distance to half so the alternate cells can be filled
+                    for c_index, row_jumps in enumerate(range(int(abs_row_distance/2))):
+                        if abs_row_distance == 10 and c_index > 2:
+                            continue
+                        if row_jumps % 2 == 0:                                                     # this condition is to make alternate cell filling
+                            if row_distance > 0:                                                   # if distance is positive the filling would be upward else downward
+                                x_copy[m_row + row_jumps + 2][m_column] = 5
+                            else:
+                                x_copy[m_row - row_jumps - 2][m_column] = 5    
+    
+    return x_copy
+
+################################################################################################################################ 
+
 def solve_ae3edfdc(x):
     
     """ 
