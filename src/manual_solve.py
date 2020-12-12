@@ -1,5 +1,22 @@
 #!/usr/bin/python
 
+"""
+
+Submitted By:
+
+Name : Prakhar Gurawa
+Student ID: 20231064
+
+Name : Sashwanth Sanjeev Kumar Sharma
+Student ID: 20230331
+
+Reference: https://arxiv.org/pdf/1911.01547.pdf
+
+ 
+Github Link : https://github.com/prakhargurawa/ARC
+
+"""
+
 import os, sys
 import json
 import numpy as np
