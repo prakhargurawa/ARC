@@ -941,6 +941,50 @@ def solve_c1d99e64(x):
     return x_copy
     
 ################################################################################################################################
+"""
+## Summary on python features and libraries used:
+
+Almost every task is solved using python numpy library since it involves several mathematical calculations, and excellent features of numpy is its performance, size and functionality, while performing some mathematical calculations, it is not necessary to loop through rows and columns (because it is vectorised), instead use the numpy built-in functions which facilitates the need with faster approach, some of the functions which are more commonly used in the tasks are (given below are basic syntax and can be extended further based on the requirement)
+
+    I. np.where ( x == value), where x is the 2D numpy array and y is the value of the cell.This function will return all the indices of the matrix x for the given value
+    
+    II. np.argwhere(x) or np.argwhere(<x - condition>), where x is the 2D numpy array.This function will return all the indices whose value is non-zero and takes conditional input also.
+    
+    III. np.unique(x), where x is the 2D numpy array.This function will return all the unique values available in the given matrix x.
+    
+    IV. np.multiply(x1,x2), where x1 and x2 are 2D numpy array with same dimensions.This function will multiply the values of similar indices of both the matrix and return a matrix with multiplied values at respective position/cells.
+    
+    V. np.flip(x, axis=0 or 1), where x is the 2D numpy array.This function flips the array either vertically or horizontally based on the axis value. 
+    
+    VI. np. diag_indices(n), where n is the dimension of n x n matrix.This function will return all the diagonal index for the matrix with size n x n
+    
+    
+## Similarities:
+
+1.	In ARC, all the tasks are related to matrix manipulation and understanding the pattern or the relationship between the input and output of the task is the most important factor.
+
+2.	There are group of tasks which has similar pattern, but the similarity would be only for a subset or part of the pattern, for instance simple task pattern exists in medium and difficult task also but as a subset pattern.
+
+3.	For these kinds of tasks same approach can be used to solve the pattern, i.e., these subsets of problems can be divided into smaller or simpler task and device an approach of developing micro functions that could solve similar smaller problems and help us to reduce the redundancy of the code and lead us to the path of broad generalization.
+
+4.	These micro functions can be used as input to the actual high-level task and solve the general patterns/problems.
+
+## Differences:
+
+1.	There are tasks where new elements are not added to input matrix, for example: task (846bdb03), whereas there are tasks where we need some kind of manipulation and add new components to input matrix and perform conversion to output matrix, for example (d07ae81c).
+
+2.	There are tasks where the input and output have different dimensions, where the input of the matrix is not modified but taken as reference and also the tasks with same dimension where modification happens on the same matrix itself.
+
+3.	There are different categories of task which has completely different approach of solving the pattern
+
+    * Some of them are flipping the matrix or having half mirror image of the other side or foldable pattern. 
+    * Tasks like recognising a small pattern and develop a big picture of it into multiple small patterns with some rules and similarly to recognise a small pattern from a big         picture.
+    * Tasks like puzzles, like placing a subset of pattern inside another pattern with some rules and placing all the patterns one above the other and deriving a final pattern.
+
+These kind of different problems or patterns is a great approach to train a model and test its general intelligence of solving the pattern
+
+"""
+################################################################################################################################
 
 def main():
     # Find all the functions defined in this file whose names are
